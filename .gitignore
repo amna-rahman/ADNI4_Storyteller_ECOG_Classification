@@ -1,0 +1,45 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# ADNI data - NEVER upload raw, interim, or processed datasets
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Participant-level ADNI outputs containing PTID (keep aggregate summary CSVs in results/)
+results/**/*participant_predictions*.csv
+results/**/*participant_oof_predictions*.csv
+results/**/*oof_predictions*.csv
+results/**/*oof_probabilities*.csv
+results/**/*_oof.csv
+results/**/*heldout_*shap_values*.csv
+results/**/*participant_features*.csv
+results/**/*participant_values*.csv
+
+# Local model checkpoints or temporary archives
+results/models/*
+*.zip
+paper_bundle_tmp/
+
+# Environment and secrets
+.env
+*.log
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

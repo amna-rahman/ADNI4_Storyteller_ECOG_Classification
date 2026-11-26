@@ -1,0 +1,2 @@
+Primary_Seed,Full_Fusion_AUC_Seed42,Reduced_Fusion_AUC_Seed42,Seed42_AUC_Difference,Mean_AUC_Difference_Across_Seeds,SD_AUC_Difference_Across_Seeds,Seeds_Reduced_AUC_Higher,Seeds_Full_AUC_Higher,Seeds_Tied
+42,0.8070500927643786,0.862708719851577,0.05565862708719849,0.033395176252319116,0.014510041071923416,10,0,0

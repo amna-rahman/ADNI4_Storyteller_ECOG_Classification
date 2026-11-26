@@ -1,0 +1,21 @@
+Dataset 3 SHAP interpretation summary
+
+Seed 42 participant-level ROC-AUC:
+  Full fusion: 0.8071
+  Reduced fusion: 0.8627
+  Reduced minus full: +0.0557
+
+Across 10 seeds, reduced fusion had higher AUC in 10 seeds, full fusion in 0, and tied in 0.
+
+Top five reduced-fusion features by mean absolute SHAP:
+  ECOGPT8 (ECOG): mean absolute SHAP=0.8703; positive attribution frequency=33.4%
+  STORY2IMM_MEAN_PAUSE_LENGTH (Storyteller): mean absolute SHAP=0.7620; positive attribution frequency=37.3%
+  ECOGPT9 (ECOG): mean absolute SHAP=0.6041; positive attribution frequency=64.5%
+  STORY1IMM_IDEA_DENSITY (Storyteller): mean absolute SHAP=0.5143; positive attribution frequency=55.4%
+  STORY2IMM_NUM_PAUSES (Storyteller): mean absolute SHAP=0.4676; positive attribution frequency=56.5%
+
+Interpretation limits:
+  Positive SHAP values push the fitted model toward MCI; negative values push it toward CN.
+  Mean absolute SHAP measures attribution magnitude, not direction or model performance.
+  SHAP describes how this fitted model uses the inputs; it does not establish causality or clinical importance.
+  The AUC difference is a predictive-performance comparison; SHAP alone does not explain it causally.

@@ -1,0 +1,6 @@
+window,window_days,assessments,participants,CN_assessments,MCI_assessments,mean_ECOG_records,median_latest_gap_days,mean_latest_gap_days,max_latest_gap_days
+30_days,30,77,71,53,24,1.0,16.0,15.285714285714286,29
+90_days,90,150,132,102,48,1.0,28.0,32.84,89
+180_days,180,183,160,121,62,1.0,35.0,50.743169398907106,179
+365_days,365,328,175,222,106,1.0030487804878048,119.5,132.45426829268294,363
+historical,Any historical,515,185,382,133,1.0660194174757283,222.0,266.95533980582525,988

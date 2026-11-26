@@ -1,0 +1,171 @@
+experiment_group: baseline
+project:
+  name: ADNI4 Speech and Participant Self-Reported Everyday Cognition (ECog-12 PT)
+    MCI Detection
+  ecog_source_table: ECOG12PT (Everyday Cognition 12 Item - Participant Self-Report)
+  primary_cohort_unit: assessment
+  evaluation_unit: participant
+  target_encoding:
+    CN: 0
+    MCI: 1
+paths:
+  raw_data_dir: data/raw
+  processed_data_dir: data/processed
+  notebooks_dir: src
+  results_root: results
+  figures_root: figures
+  datasets:
+    storyteller_source: data/processed/dataset1_storyteller.csv
+    ecog_source: data/processed/dataset2_ecog.csv
+    primary_multimodal_30d: data/processed/primary_multimodal_30day_cohort.csv
+    all_pairs_extension: data/processed/dataset4_multimodal_cn_vs_noncn.csv
+cohort:
+  id_col: PTID
+  target_col: TARGET
+  story_date_col: EXAMDATE_STORY
+  ecog_date_col: COLDATE
+  max_ecog_lookback_days: 30
+  ecog_before_or_on_story: true
+  ecog_aggregation: median
+  ecog_scale:
+    '1': Better or no change
+    '2': Questionable or occasionally worse
+    '3': Consistently a little worse
+    '4': Consistently much worse
+    '9': I don't know or not applicable (recoded to NaN)
+  ecog_missing_code: 9
+  expected_primary_assessments: 77
+  expected_primary_participants: 71
+  expected_class_counts_participants:
+    CN: 49
+    MCI: 22
+features:
+  story_prefix: STORY
+  story_excluded_terms:
+  - PLAYBACK_COUNT
+  - GMATCH
+  - LANGUAGE
+  expected_story_feature_count: 51
+  ecog_all_items:
+  - ECOGPT1
+  - ECOGPT2
+  - ECOGPT3
+  - ECOGPT4
+  - ECOGPT5
+  - ECOGPT6
+  - ECOGPT7
+  - ECOGPT8
+  - ECOGPT9
+  - ECOGPT10
+  - ECOGPT11
+  - ECOGPT12
+  ecog_reduced_items:
+  - ECOGPT3
+  - ECOGPT4
+  - ECOGPT5
+  - ECOGPT6
+  - ECOGPT7
+  - ECOGPT8
+  - ECOGPT9
+  - ECOGPT10
+  - ECOGPT11
+  - ECOGPT12
+  baseline_feature_sets:
+    storyteller_only:
+      use_storyteller: true
+      ecog_items: []
+      n_features: 51
+    ecog_pt_items_3_to_12_only:
+      use_storyteller: false
+      ecog_items:
+      - ECOGPT3
+      - ECOGPT4
+      - ECOGPT5
+      - ECOGPT6
+      - ECOGPT7
+      - ECOGPT8
+      - ECOGPT9
+      - ECOGPT10
+      - ECOGPT11
+      - ECOGPT12
+      n_features: 10
+    full_fusion_all_12_ecog:
+      use_storyteller: true
+      ecog_items:
+      - ECOGPT1
+      - ECOGPT2
+      - ECOGPT3
+      - ECOGPT4
+      - ECOGPT5
+      - ECOGPT6
+      - ECOGPT7
+      - ECOGPT8
+      - ECOGPT9
+      - ECOGPT10
+      - ECOGPT11
+      - ECOGPT12
+      n_features: 63
+preprocessing:
+  imputer:
+    strategy: median
+    add_indicator: true
+  scaler: StandardScaler
+model:
+  type: LogisticRegression
+  penalty: l2
+  C: 1.0
+  max_iter: 5000
+  class_weight: balanced
+  solver: liblinear
+  random_state: 42
+  probability_threshold: 0.5
+validation:
+  cv_strategy: StratifiedGroupKFold
+  n_splits: 5
+  shuffle: true
+  primary_seed: 42
+  seeds:
+  - 11
+  - 21
+  - 42
+  - 52
+  - 62
+  - 72
+  - 82
+  - 92
+  - 102
+  - 112
+  participant_aggregation: mean_oof_probability
+studies:
+  study_1_historical_prior_ecog_baseline:
+    notebook: src/03_train_temporal_and_ablation.ipynb
+    output_dir: results/historical_prior_ecog_classification
+  study_2_temporal_window_sensitivity:
+    notebook: src/03_train_temporal_and_ablation.ipynb
+    windows_days:
+      30_days: 30
+      90_days: 90
+      180_days: 180
+      365_days: 365
+      historical: null
+    output_dir: results/temporal_window_sensitivity
+  study_3_fixed_30day_cohort_comparison:
+    notebook: src/03_train_temporal_and_ablation.ipynb
+    fixed_cohort_window_days: 30
+    exports_primary_cohort: data/processed/primary_multimodal_30day_cohort.csv
+    comparison_windows_days:
+      30_days: 30
+      90_days: 90
+      180_days: 180
+      365_days: 365
+      historical: null
+    output_dir: results/common_cohort_temporal_comparison
+  all_pairs_sensitivity_extension:
+    notebook: src/06_dataset4_all_pairs_extension.ipynb
+    dataset: data/processed/dataset4_multimodal_cn_vs_noncn.csv
+    target_definition: CN (0) vs MCI/dementia (1)
+    expected_pairs: 877
+    expected_participants: 221
+    expected_stable_label_participants: 218
+    temporal_restriction: null
+    output_root: results/dataset4_setup
